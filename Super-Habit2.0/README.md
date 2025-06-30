@@ -40,20 +40,17 @@ superhabit/
 │   ├── __init__.py
 │   ├── habito.py          # Clase Habito
 │   └── registro_cumplimiento.py
-├── dao/                   # Acceso a datos
+├── dao/                   # Acceso a datos (almacenamiento en memoria)
 │   ├── __init__.py
-│   ├── base_dao.py        # DAO base con operaciones CRUD
+│   ├── base_dao.py        # DAO base con almacenamiento en memoria
 │   ├── habito_dao.py      # DAO específico para hábitos
 │   └── registro_dao.py    # DAO para registros
 ├── utils/                 # Utilidades
 │   ├── __init__.py
 │   ├── calculadora_progreso.py
 │   └── generador_mensajes.py
-├── data/                  # Almacenamiento JSON
-│   ├── habitos.json
-│   └── registros.json
 ├── gestor_superhabit.py   # Lógica de negocio principal
-├── interfaz_usuario.py    # Interfaz de consola
+├── interfaz_usuario.py    # Interfaz de consola con validación mejorada
 ├── main.py               # Punto de entrada
 └── README.md
 ```
@@ -65,7 +62,7 @@ superhabit/
 - `RegistroCumplimiento`: Registra el cumplimiento diario de hábitos
 
 #### **Capa de Acceso a Datos (DAO)**
-- `BaseDAO`: Operaciones CRUD genéricas con persistencia JSON
+- `BaseDAO`: Operaciones CRUD genéricas con almacenamiento en memoria
 - `HabitoDAO`: Operaciones específicas para hábitos
 - `RegistroDAO`: Gestión de registros de cumplimiento
 
@@ -147,9 +144,9 @@ superhabit/
 - **Metas**: Celebración de objetivos alcanzados
 
 ### Persistencia de Datos
-- **Formato JSON**: Fácil de leer y modificar
-- **Backup automático**: Los datos se guardan inmediatamente
-- **Estructura robusta**: Manejo de errores y validaciones
+- **Almacenamiento en memoria**: Sistema rápido y eficiente
+- **Sesión activa**: Los datos se mantienen durante el uso de la aplicación
+- **Estructura robusta**: Manejo de errores y validaciones mejoradas
 
 ## 📊 Métricas y Estadísticas
 
@@ -180,6 +177,30 @@ superhabit/
 - **Variedad**: Más de 50 mensajes únicos
 - **Contextualización**: Diferentes según el momento y situación
 - **Positividad**: Enfoque en el crecimiento y la mejora continua
+
+## 🆕 Mejoras Versión 2.0
+
+### ✅ **Validación de Entrada Mejorada**
+- **Bucles de reintento**: Si el usuario ingresa un valor incorrecto, puede corregirlo sin reiniciar
+- **Mensajes específicos**: Indicaciones claras sobre qué tipo de error ocurrió
+- **Validación de rangos**: Verificación automática de límites (ej: duración 1-1440 minutos)
+- **Múltiples formatos**: Horarios en formato 12h (AM/PM) y 24h (HH:MM)
+
+### 🚫 **Sistema Sin Archivos**
+- **Almacenamiento en memoria**: No depende de archivos externos
+- **Inicio limpio**: Cada sesión comienza con datos frescos
+- **Sin permisos**: No requiere acceso de escritura al disco
+- **Portabilidad**: Funciona en cualquier sistema sin configuración
+
+### 🔄 **Sincronización Mejorada**
+- **Progreso en tiempo real**: Las estadísticas se actualizan inmediatamente
+- **Historial sincronizado**: Los datos se mantienen consistentes entre módulos
+- **Cálculos precisos**: Métricas exactas basadas en datos actuales
+
+### 🛡️ **Robustez y Estabilidad**
+- **Manejo de errores**: Captura elegante de excepciones
+- **Validación exhaustiva**: Verificación en todos los puntos de entrada
+- **Experiencia fluida**: Sin interrupciones por errores de usuario
 
 ## 🔧 Características Técnicas
 
@@ -212,7 +233,7 @@ superhabit/
 - [ ] Análisis de tendencias avanzado
 
 ### Técnicas
-- [ ] Base de datos SQLite
+- [ ] Persistencia de datos opcional
 - [ ] API REST
 - [ ] Aplicación web
 - [ ] Aplicación móvil
