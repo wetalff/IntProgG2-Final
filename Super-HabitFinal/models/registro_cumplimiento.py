@@ -43,7 +43,18 @@ class RegistroCumplimiento:
     @classmethod
     def from_dict(cls, data):
         """Crea un registro desde un diccionario"""
-        fecha = datetime.fromisoformat(data['fecha'] + 'T00:00:00')
+        # Manejar fecha que puede venir como datetime o string
+        if isinstance(data['fecha'], datetime):
+            fecha = data['fecha']
+        elif isinstance(data['fecha'], str):
+            # Si es string, convertir adecuadamente
+            if 'T' in data['fecha']:
+                fecha = datetime.fromisoformat(data['fecha'])
+            else:
+                fecha = datetime.fromisoformat(data['fecha'] + 'T00:00:00')
+        else:
+            # Si es un objeto date, convertir a datetime
+            fecha = datetime.combine(data['fecha'], datetime.min.time())
         
         registro = cls(
             habito_id=data['habito_id'],
@@ -54,7 +65,11 @@ class RegistroCumplimiento:
         )
         
         if data.get('fecha_completado'):
-            registro.fecha_completado = datetime.fromisoformat(data['fecha_completado'])
+            # Manejar fecha_completado que puede venir como datetime o string
+            if isinstance(data['fecha_completado'], datetime):
+                registro.fecha_completado = data['fecha_completado']
+            else:
+                registro.fecha_completado = datetime.fromisoformat(data['fecha_completado'])
         
         return registro
 

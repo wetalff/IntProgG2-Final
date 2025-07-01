@@ -52,9 +52,22 @@ class RegistroDAO(BaseDAO):
         """Obtiene registros en un período de tiempo"""
         registros = []
         for datos in self.obtener_todos():
-            fecha_registro = datetime.fromisoformat(datos['fecha'] + 'T00:00:00').date()
-            if fecha_inicio <= fecha_registro <= fecha_fin:
-                registros.append(RegistroCumplimiento.from_dict(datos))
+            try:
+                # Manejar fecha que puede venir en diferentes formatos
+                if isinstance(datos['fecha'], str):
+                    if 'T' in datos['fecha']:
+                        fecha_registro = datetime.fromisoformat(datos['fecha']).date()
+                    else:
+                        fecha_registro = datetime.fromisoformat(datos['fecha'] + 'T00:00:00').date()
+                elif isinstance(datos['fecha'], datetime):
+                    fecha_registro = datos['fecha'].date()
+                else:
+                    fecha_registro = datos['fecha']
+                
+                if fecha_inicio <= fecha_registro <= fecha_fin:
+                    registros.append(RegistroCumplimiento.from_dict(datos))
+            except Exception:
+                continue  # Saltar registros con fechas problemáticas
         return sorted(registros, key=lambda r: r.fecha)
     
     def obtener_registros_completados_por_habito(self, habito_id: int) -> List[RegistroCumplimiento]:

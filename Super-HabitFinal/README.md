@@ -40,9 +40,9 @@ superhabit/
 │   ├── __init__.py
 │   ├── habito.py          # Clase Habito
 │   └── registro_cumplimiento.py
-├── dao/                   # Acceso a datos (almacenamiento en memoria)
+├── dao/                   # Acceso a datos (almacenamiento CSV)
 │   ├── __init__.py
-│   ├── base_dao.py        # DAO base con almacenamiento en memoria
+│   ├── base_dao.py        # DAO base con persistencia CSV
 │   ├── habito_dao.py      # DAO específico para hábitos
 │   └── registro_dao.py    # DAO para registros
 ├── utils/                 # Utilidades
@@ -62,7 +62,7 @@ superhabit/
 - `RegistroCumplimiento`: Registra el cumplimiento diario de hábitos
 
 #### **Capa de Acceso a Datos (DAO)**
-- `BaseDAO`: Operaciones CRUD genéricas con almacenamiento en memoria
+- `BaseDAO`: Operaciones CRUD genéricas con persistencia CSV
 - `HabitoDAO`: Operaciones específicas para hábitos
 - `RegistroDAO`: Gestión de registros de cumplimiento
 
@@ -100,7 +100,7 @@ superhabit/
    ```
 
 **📁 Nota sobre Persistencia:**
-La aplicación creará automáticamente archivos `.pkl` en el directorio del proyecto para guardar tus datos permanentemente. No necesitas hacer nada especial - tus hábitos y progreso se mantendrán entre sesiones.
+La aplicación creará automáticamente archivos `.csv` en el directorio del proyecto para guardar tus datos permanentemente. Estos archivos pueden ser abiertos en Excel u otras aplicaciones para análisis adicional. No necesitas hacer nada especial - tus hábitos y progreso se mantendrán entre sesiones.
 
 ### Uso Básico
 
@@ -146,14 +146,14 @@ La aplicación creará automáticamente archivos `.pkl` en el directorio del pro
 - **Alertas**: Recordatorios suaves y enérgicos
 - **Metas**: Celebración de objetivos alcanzados
 
-### Persistencia de Datos con Pickle
-- **Automatizado**: Los datos se guardan automáticamente en archivos `.pkl` usando el módulo `pickle`.
-- **Recuperación al inicio**: Al iniciar la aplicación, se cargan los datos existentes de los archivos.
-- **Compatibilidad**: Los datos persisten entre ejecuciones del programa, asegurando que no se pierda información.
+### Persistencia de Datos con CSV
+- **Automatizado**: Los datos se guardan automáticamente en archivos `.csv`.
+- **Estructura clara**: Cada archivo CSV organiza los datos en columnas legibles.
+- **Exportable**: Los archivos CSV pueden ser abiertos en Excel u otras aplicaciones compatibles.
 - **Facilidad de uso**: No requiere configuración adicional por parte del usuario, todo es gestionado internamente.
 - **Archivos generados**:
-  - `habitos.pkl`: Almacena todos los hábitos creados
-  - `registros.pkl`: Guarda el historial de cumplimiento
+  - `habitos.csv`: Almacena todos los hábitos creados
+  - `registros.csv`: Guarda el historial de cumplimiento
   - Los archivos se crean automáticamente en el directorio de la aplicación
 
 ## 📊 Métricas y Estadísticas
@@ -194,11 +194,11 @@ La aplicación creará automáticamente archivos `.pkl` en el directorio del pro
 - **Validación de rangos**: Verificación automática de límites (ej: duración 1-1440 minutos)
 - **Múltiples formatos**: Horarios en formato 12h (AM/PM) y 24h (HH:MM)
 
-### 🚫 **Sistema Sin Archivos**
-- **Almacenamiento en memoria**: No depende de archivos externos
-- **Inicio limpio**: Cada sesión comienza con datos frescos
-- **Sin permisos**: No requiere acceso de escritura al disco
-- **Portabilidad**: Funciona en cualquier sistema sin configuración
+### 📄 **Sistema Basado en Archivos CSV**
+- **Almacenamiento en CSV**: Datos estructurados y fácilmente exportables
+- **Inicio persistente**: Los datos se guardan entre sesiones
+- **Legibilidad**: Los archivos son fácilmente editables fuera de la aplicación
+- **Estandarizado**: Uso de formato estándar compatible
 
 ### 🔄 **Sincronización Mejorada**
 - **Progreso en tiempo real**: Las estadísticas se actualizan inmediatamente

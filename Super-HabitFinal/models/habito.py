@@ -47,7 +47,11 @@ class Habito:
         )
         
         if data.get('fecha_creacion'):
-            habito.fecha_creacion = datetime.fromisoformat(data['fecha_creacion'])
+            # Si ya es datetime, mantenerlo; si es string, convertirlo
+            if isinstance(data['fecha_creacion'], datetime):
+                habito.fecha_creacion = data['fecha_creacion']
+            else:
+                habito.fecha_creacion = datetime.fromisoformat(data['fecha_creacion'])
         
         habito.activo = data.get('activo', True)
         return habito
