@@ -34,7 +34,7 @@ import pwinput
 
 contraseña = "Final12345"
 
-def inicio():
+def inicio(): #Implementación de acceso al programa mediante inicio de sesión con contraseña
     intentos = 3
     while intentos > 0:
      os.system('cls' if os.name == 'nt' else 'clear')
