@@ -110,7 +110,10 @@ class BaseDAO:
         """Guarda los datos actuales en un archivo CSV"""
         try:
             if not self.datos:
-                return  # No crear archivo vacío
+                # Si no hay datos, crear/sobrescribir archivo vacío
+                if os.path.exists(self._archivo_datos):
+                    os.remove(self._archivo_datos)
+                return
             
             # Obtener campos del primer elemento
             campos = list(self.datos[0].keys())

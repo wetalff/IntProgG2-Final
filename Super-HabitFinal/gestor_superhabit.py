@@ -90,8 +90,18 @@ class GestorSuperHabit:
         return self.habito_dao.desactivar_habito(habito_id)
     
     def eliminar_habito(self, habito_id: int) -> bool:
-        """Elimina permanentemente un hábito"""
-        return self.habito_dao.eliminar_habito(habito_id)
+        """Elimina permanentemente un hábito y sus registros asociados"""
+        # Eliminar registros asociados
+        registros_eliminados = self.registro_dao.eliminar_registros_por_habito(habito_id)
+        
+        # Eliminar el hábito
+        habito_eliminado = self.habito_dao.eliminar_habito(habito_id)
+        
+        # Solo mostrar información si se eliminaron registros
+        if registros_eliminados > 0:
+            print(f"✅ Hábito eliminado exitosamente (incluidos {registros_eliminados} registros)")
+        
+        return habito_eliminado
     
     # ===== GESTIÓN DE CUMPLIMIENTO =====
     

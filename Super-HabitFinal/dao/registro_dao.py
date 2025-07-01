@@ -26,9 +26,22 @@ class RegistroDAO(BaseDAO):
     def obtener_registro_por_habito_fecha(self, habito_id: int, fecha: date) -> Optional[RegistroCumplimiento]:
         """Obtiene un registro específico por hábito y fecha"""
         for datos in self.obtener_todos():
-            if (datos['habito_id'] == habito_id and 
-                datos['fecha'] == fecha.isoformat()):
-                return RegistroCumplimiento.from_dict(datos)
+            try:
+                # Manejar diferentes formatos de fecha
+                if isinstance(datos['fecha'], str):
+                    if 'T' in datos['fecha']:
+                        fecha_registro = datetime.fromisoformat(datos['fecha']).date()
+                    else:
+                        fecha_registro = datetime.fromisoformat(datos['fecha'] + 'T00:00:00').date()
+                elif isinstance(datos['fecha'], datetime):
+                    fecha_registro = datos['fecha'].date()
+                else:
+                    fecha_registro = datos['fecha']
+                
+                if (datos['habito_id'] == habito_id and fecha_registro == fecha):
+                    return RegistroCumplimiento.from_dict(datos)
+            except Exception:
+                continue  # Saltar registros con fechas problemáticas
         return None
     
     def obtener_registros_por_habito(self, habito_id: int) -> List[RegistroCumplimiento]:
@@ -131,4 +144,25 @@ class RegistroDAO(BaseDAO):
                 break
         
         return racha
+    
+    def eliminar_registros_por_habito(self, habito_id: int) -> int:
+        """Elimina todos los registros de un hábito específico"""
+        registros_eliminados = 0
+        
+        # Filtrar y mantener solo los registros que NO pertenecen al hábito eliminado
+        registros_restantes = []
+        for datos in self.obtener_todos():
+            if datos['habito_id'] != habito_id:
+                registros_restantes.append(datos)
+            else:
+                registros_eliminados += 1
+        
+        # Actualizar la lista de datos
+        self.datos.clear()
+        self.datos.extend(registros_restantes)
+        
+        # Guardar los cambios
+        self._guardar_datos()
+        
+        return registros_eliminados
 

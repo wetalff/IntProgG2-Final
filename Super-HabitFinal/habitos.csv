@@ -1,6 +1,0 @@
-id,nombre,frecuencia,duracion,horario_sugerido,fecha_creacion,activo
-1,Jugar,diaria,20,,2025-06-30T22:27:42.675191,True
-2,comer,semanal,20,,2025-06-30T22:28:38.460231,True
-3,matar,semanal,23,,2025-06-30T22:30:48.379508,True
-4,comer,diaria,20,,2025-06-30T22:50:53.865907,True
-5,Leer,semanal,30,,2025-06-30T22:55:37.699868,True

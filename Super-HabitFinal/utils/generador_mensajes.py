@@ -116,14 +116,14 @@ class GeneradorMensajes:
             mensaje = self.obtener_mensaje_motivacional('alerta_fuerte')
             return f"{mensaje}\n\n¡Tienes {cantidad} hábitos pendientes! Es momento de actuar 💪"
     
-    def generar_mensaje_meta_alcanzada(self, habito: Habito, tipo_meta: str, completados: int = 0, objetivo: int = 0, porcentaje: float = 0) -> str:
+    def generar_mensaje_meta_alcanzada(self, habito: Habito, tipo_meta: str) -> str:
         """Genera mensaje cuando se alcanza una meta semanal o mensual"""
         if tipo_meta == 'semanal':
             mensaje = random.choice(self.mensajes_metas['semanal_alcanzada'])
         else:  # mensual
             mensaje = random.choice(self.mensajes_metas['mensual_alcanzada'])
         
-        return f"{mensaje}\n\n📊 {habito.nombre}\n✅ {completados}/{objetivo} ({porcentaje:.0f}%)"
+        return f"{mensaje}\n🎯 Hábito: {habito.nombre}"
     
     def generar_recomendacion_mejora(self, habito: Habito, porcentaje_exito: float = 0) -> str:
         """Genera recomendaciones basadas en el desempeño"""
@@ -136,32 +136,30 @@ class GeneradorMensajes:
         else:
             return f"🎯 Enfócate en '{habito.nombre}': Empieza con sesiones más cortas o cambia el horario para mayor consistencia."
     
-    def generar_mensaje_resumen_semanal(self, habitos: List[Habito], metas_alcanzadas: int = 0, total_metas: int = 0) -> str:
+    def generar_mensaje_resumen_semanal(self, habitos: List[Habito]) -> str:
         """Genera un resumen motivacional semanal"""
         if not habitos:
             return "¡Considera agregar algunos hábitos para la próxima semana! 📝"
         
-        # Si no se proporcionan datos, usar valores por defecto
-        if total_metas == 0:
-            total_metas = len(habitos)
-            metas_alcanzadas = max(0, int(total_metas * 0.7))  # Asumir 70% de éxito
+        # Calcular valores básicos
+        total_habitos = len(habitos)
+        # Asumir un 70% de éxito promedio para el mensaje motivacional
+        porcentaje_estimado = 70.0
         
-        porcentaje_general = (metas_alcanzadas / total_metas * 100) if total_metas > 0 else 0
-        
-        if porcentaje_general >= 80:
+        if porcentaje_estimado >= 80:
             emoji = "🎉"
             mensaje = "¡Semana espectacular!"
-        elif porcentaje_general >= 60:
+        elif porcentaje_estimado >= 60:
             emoji = "👏"
             mensaje = "¡Buena semana!"
-        elif porcentaje_general >= 40:
+        elif porcentaje_estimado >= 40:
             emoji = "💪"
             mensaje = "Semana con progreso"
         else:
             emoji = "🎯"
             mensaje = "La próxima semana será mejor"
         
-        return f"{emoji} {mensaje}\n\n📊 Resumen semanal:\n✅ {metas_alcanzadas}/{total_metas} metas alcanzadas\n📈 {porcentaje_general:.0f}% de éxito general"
+        return f"{emoji} {mensaje}\n\n📊 Tienes {total_habitos} hábito(s) activo(s)\n🎯 ¡Sigue construyendo hábitos sólidos!"
     
     def obtener_consejo_del_dia(self) -> str:
         """Obtiene un consejo motivacional del día"""
